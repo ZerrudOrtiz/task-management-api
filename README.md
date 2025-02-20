@@ -61,3 +61,11 @@ run the project
 
 COMMAND FOR database notification to works 
  - sail artisan queue:work
+
+Run the Database Migration and Seeder
+ - sail artisan migrate
+ - sail artisan db:seed
+
+default user 
+ - admin@taskmangement.ph
+ - admin1234
