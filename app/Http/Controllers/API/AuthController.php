@@ -22,7 +22,7 @@ class AuthController extends Controller
                 return response()->json([
                     'user' => $user,
                     'accessToken' => $user->createToken('auth_token')->plainTextToken,
-                    'message' => 'Success',
+                    'success' => 1,
                 ]);
             }
         }
@@ -30,5 +30,14 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Invalid login'
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'message' => 'Successfully logged out'
+        ], 200);
     }
 }
