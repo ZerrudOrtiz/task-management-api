@@ -29,7 +29,9 @@ Route::name('auth')->prefix('auth')->group(function() {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tasks', [TaskController::class, 'index']);
     Route::post('/tasks', [TaskController::class, 'store']);
+    Route::get('/users', [TaskController::class, 'getUsers']);
     Route::put('/tasks/{task}', [TaskController::class, 'update']);
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
 });
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -30,12 +31,21 @@ class TaskController extends Controller
             $query->where('assigned_to', $request->assigned_to);
         }
     
-        $perPage = $request->get('per_page', 10);
+        $perPage = $request->get('per_page', 5);
         
         $tasks = $query->paginate($perPage);
     
         return response()->json([
-            'tasks' => $tasks->items(), // Current page tasks
+            'tasks' => $tasks->map(function ($task) {
+                return [
+                    'task_id' => $task->task_id,
+                    'title' => $task->title,
+                    'description' => $task->description,
+                    'due_date' => $task->due_date,
+                    'status' => $task->status,
+                    'assigned_to' => $task->user ? $task->user->name : 'Unassigned', // Return the user name
+                ];
+            }),
             'current_page' => $tasks->currentPage(),
             'total_pages' => $tasks->lastPage(),
             'total_tasks' => $tasks->total(),
@@ -74,5 +84,20 @@ class TaskController extends Controller
         return response()->json([
             'success' => 1
         ],201);
+    }
+
+    public function destroy(Task $task)
+    {
+        $task->delete();
+
+        return response()->json([
+            'success' => 1,
+        ], 200);
+    }
+
+    public function getUsers()
+    {
+        $users = User::all();
+        return response()->json($users);
     }
 }
