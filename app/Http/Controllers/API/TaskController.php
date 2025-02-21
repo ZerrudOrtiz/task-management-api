@@ -19,9 +19,8 @@ class TaskController extends Controller
         $query = Task::query();
 
         if ($request->has('title') && $request->title != null) {
-            $query->where('title', $request->title);
+            $query->where('title', 'LIKE', '%' . $request->title . '%');
         }
-
 
         if ($request->has('status') && $request->status != null) {
             $query->where('status', $request->status);
@@ -43,7 +42,8 @@ class TaskController extends Controller
                     'description' => $task->description,
                     'due_date' => $task->due_date,
                     'status' => $task->status,
-                    'assigned_to' => $task->user ? $task->user->name : 'Unassigned', // Return the user name
+                    'assigned_to' => $task->user->user_id,
+                    'name' => $task->user ? $task->user->name : 'Unassigned',
                 ];
             }),
             'current_page' => $tasks->currentPage(),
