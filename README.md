@@ -59,9 +59,6 @@ run the project
  - source .bashrc
  - sail up
 
-COMMAND FOR database notification to works 
- - sail artisan queue:work
-
 Run the Database Migration and Seeder
  - sail artisan migrate
  - sail artisan db:seed
