@@ -69,3 +69,7 @@ Run the Database Migration and Seeder
 default user 
  - admin@taskmangement.ph
  - admin1234
+
+
+Run the Unit Test (phpunit)
+ - sail artisan test
