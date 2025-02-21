@@ -45,7 +45,7 @@ LINK : https://learn.microsoft.com/en-us/windows/wsl/install-manual
 
 HOW TO RUN THE PROJECT
  - composer install 
-		- https://github.com/ZerrudOrtiz/task-management-application.gitt
+		- https://github.com/ZerrudOrtiz/task-management-application.git
 
 Clone the Repo inside the wsl - (FOR /task-management-application)
 
