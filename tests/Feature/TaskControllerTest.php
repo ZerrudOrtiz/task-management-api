@@ -45,7 +45,9 @@ class TaskControllerTest extends TestCase
             'description' => 'Task description',
             'due_date' => now()->addDays(3)->toDateString(),
             'status' => 'pending',
-            'assigned_to' => $assignedUser->user_id, 
+            'priority' => 'low',
+            'order' => 1,
+            'user_id' => $assignedUser->user_id, 
         ];
     
         $response = $this->postJson('/api/tasks', $taskData);
@@ -69,7 +71,9 @@ class TaskControllerTest extends TestCase
             'description' => 'Task description',
             'due_date' => now()->addDays(3)->toDateString(),
             'status' => 'completed',
-            'assigned_to' => $assignedUser->user_id, 
+            'priority' => 'low',
+            'order' => 1,
+            'user_id' => $assignedUser->user_id, 
         ];
     
         $response = $this->putJson("/api/tasks/{$task->task_id}", $updatedData);

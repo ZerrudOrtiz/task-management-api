@@ -17,7 +17,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->date('due_date')->nullable();
             $table->enum('status', ['pending', 'in_progress', 'completed','cancelled'])->default('pending');
-            $table->unsignedBigInteger('assigned_to');
+            $table->enum('priority', ['low', 'medium', 'high'])->default('low');
+            $table->unsignedBigInteger('user_id');
+            $table->integer('order')->default(0);
             $table->unsignedBigInteger('created_by');
             $table->softDeletes();
             $table->timestamps();

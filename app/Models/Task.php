@@ -13,10 +13,10 @@ class Task extends Model
 
     protected $primaryKey = 'task_id';
 
-    protected $fillable = ['title', 'description','due_date','status', 'created_by','assigned_to'];
+    protected $fillable = ['title', 'description','due_date','status', 'priority', 'order', 'created_by','user_id'];
 
     public function user()
     {
-        return $this->belongsTo(User::class,'assigned_to', 'user_id');
+        return $this->belongsTo(User::class,'user_id', 'user_id');
     }
 }

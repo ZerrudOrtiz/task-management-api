@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthControllerTest extends TestCase
 {
-    use RefreshDatabase; // Resets DB after each test
+    use RefreshDatabase;
 
     public function test_user_can_login_with_valid_credentials()
     {
@@ -41,7 +41,7 @@ class AuthControllerTest extends TestCase
             'password' => 'wrongpassword',
         ]);
 
-        $response->assertStatus(200)
+        $response->assertStatus(401)
                  ->assertJson(['message' => 'Invalid login']);
     }
 
@@ -52,7 +52,7 @@ class AuthControllerTest extends TestCase
             'password' => 'password123',
         ]);
 
-        $response->assertStatus(200)
+        $response->assertStatus(401)
                  ->assertJson(['message' => 'Invalid login']);
     }
 }

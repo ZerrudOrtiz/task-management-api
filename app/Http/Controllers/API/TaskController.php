@@ -6,34 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\TaskService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $taskService;
+
+    public function __construct(TaskService $taskService)
+    {
+        $this->taskService = $taskService;
+    }
+
     public function index(Request $request)
     {
-        $query = Task::query();
+        $tasks = $this->taskService->listTasks($request);
 
-        if ($request->has('title') && $request->title != null) {
-            $query->where('title', 'LIKE', '%' . $request->title . '%');
-        }
-
-        if ($request->has('status') && $request->status != null) {
-            $query->where('status', $request->status);
-        }
-    
-        if ($request->has('assigned_to') && $request->assigned_to != null) {
-            $query->where('assigned_to', $request->assigned_to);
-        }
-    
-        $perPage = $request->get('per_page', 5);
-        
-        $tasks = $query->paginate($perPage);
-    
         return response()->json([
             'tasks' => $tasks->map(function ($task) {
                 return [
@@ -42,7 +30,9 @@ class TaskController extends Controller
                     'description' => $task->description,
                     'due_date' => $task->due_date,
                     'status' => $task->status,
-                    'assigned_to' => $task->user->user_id,
+                    'priority' => $task->priority,
+                    'order' => $task->order,
+                    'user_id' => $task->user->user_id,
                     'name' => $task->user ? $task->user->name : 'Unassigned',
                 ];
             }),
@@ -57,47 +47,30 @@ class TaskController extends Controller
 
     public function store(TaskRequest $request)
     {
+        $data = $request->validated();
+        $data['created_by'] = auth()->id();
 
-        $task = Task::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'due_date' => $request->due_date,
-            'status' => $request->status,
-            'assigned_to' => $request->assigned_to,
-            'created_by' => auth()->id(),
-        ]);
+        $this->taskService->create($data);
 
-        return response()->json([
-            'success' => 1
-        ],201);
+        return response()->json(['success' => 1], 201);
     }
 
     public function update(Task $task, TaskRequest $request)
     {
-        $task->title = $request->title;
-        $task->description = $request->description;
-        $task->due_date = $request->due_date;
-        $task->status = $request->status;
-        $task->assigned_to = $request->assigned_to;
-        $task->save();
+        $this->taskService->update($task, $request->validated());
 
-        return response()->json([
-            'success' => 1
-        ],201);
+        return response()->json(['success' => 1], 201);
     }
 
     public function destroy(Task $task)
     {
-        $task->delete();
+        $this->taskService->delete($task);
 
-        return response()->json([
-            'success' => 1,
-        ], 200);
+        return response()->json(['success' => 1], 200);
     }
 
     public function getUsers()
     {
-        $users = User::all();
-        return response()->json($users);
+        return response()->json(User::all());
     }
 }

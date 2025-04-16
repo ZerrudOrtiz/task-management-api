@@ -26,7 +26,7 @@ class TaskFactory extends Factory
             'description' => $this->faker->paragraph,
             'due_date' => $this->faker->date,
             'status' => 'pending',
-            'assigned_to' => User::factory(),
+            'user_id' => User::factory(),
             'created_by' => User::factory(),
         ];
     }
