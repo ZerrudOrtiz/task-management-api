@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\Task;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Grid;
@@ -44,17 +45,17 @@ class UserResource extends Resource
                     ->required(),
                     TextInput::make('password')
                     ->unique(ignoreRecord: true)
-                    ->minValue(12)
+                    ->minValue(4)
                     ->password()
                     ->revealable()
                     ->confirmed()
                     ->dehydrated(fn ($state) => filled($state))
                     ->required(fn (string $context): bool => $context === 'create')
                     ->rules([
-                        'regex:/[A-Z]/', // must contain at least one upper-case letter
-                        'regex:/[a-z]/', // must contain at least one lower-case letter
-                        'regex:/\d/',    // must contain at least one digit
-                        'regex:/[@$!%*?&]/', // must contain at least one special character
+                        // 'regex:/[A-Z]/', // must contain at least one upper-case letter
+                        // 'regex:/[a-z]/', // must contain at least one lower-case letter
+                        // 'regex:/\d/',    // must contain at least one digit
+                        // 'regex:/[@$!%*?&]/', // must contain at least one special character
                     ]),
                     TextInput::make('password_confirmation')->label('Password Confirmation')
                     ->revealable()
@@ -76,6 +77,35 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')->label('Name'),
                 Tables\Columns\TextColumn::make('email')->label('Email')->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')->label('Role'),
+
+                Tables\Columns\TextColumn::make('pending_task')->label('Pending Task')               
+                ->getStateUsing(function (User $user): string {
+
+                    $task = Task::where('user_id',$user->user_id)->where('status',config('constants.TASK_STATUS_PENDING'))->count();
+                    
+                    return $task;
+                }),
+                Tables\Columns\TextColumn::make('in_progress_task')->label('In Progress  Task')               
+                ->getStateUsing(function (User $user): string {
+
+                    $task = Task::where('user_id',$user->user_id)->where('status',config('constants.TASK_STATUS_IN_PROGRESS'))->count();
+                    
+                    return $task;
+                }),
+                Tables\Columns\TextColumn::make('completed_task')->label('Completed Task')               
+                ->getStateUsing(function (User $user): string {
+
+                    $task = Task::where('user_id',$user->user_id)->where('status',config('constants.TASK_STATUS_COMPLETED'))->count();
+                    
+                    return $task;
+                }), 
+                Tables\Columns\TextColumn::make('total_task')->label('Total Task')               
+                ->getStateUsing(function (User $user): string {
+
+                    $task = Task::where('user_id',$user->user_id)->count();
+                    
+                    return $task;
+                }),
             ])
             ->filters([
                 //
