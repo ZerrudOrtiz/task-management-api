@@ -24,8 +24,8 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->id('admin')
-            ->path('admin')
+            ->id('CheckAdmin')
+            ->path('CheckAdmin')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
@@ -51,6 +51,10 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->sidebarCollapsibleOnDesktop()
+            ->maxContentWidth('full')
+            ->topNavigation()
+            ->breadcrumbs(false)
             ->authMiddleware([
                 Authenticate::class,
             ]);
