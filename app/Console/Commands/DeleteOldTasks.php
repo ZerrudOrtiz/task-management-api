@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Task;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class DeleteOldTasks extends Command
 {
@@ -27,12 +28,22 @@ class DeleteOldTasks extends Command
      */
      public function handle()
      {
-        $this->info('Command is running');
+      $this->info('Command is running');
 
-        $threshold = Carbon::now()->subDays(30);
-         
-        $deletedCount = Task::where('created_at', '<', $threshold)->delete();
- 
-        $this->info("Deleted {$deletedCount} tasks older than 30 days.");
+      $threshold = Carbon::now()->subDays(30);
+      
+      $tasksToDelete = Task::where('created_at', '<', $threshold)->get();
+      
+      foreach ($tasksToDelete as $task) {
+          Log::info("Deleting Task", [
+              'id' => $task->task_id,
+              'title' => $task->title, 
+              'created_at' => $task->created_at,
+          ]);
+      }
+      
+      $deletedCount = Task::where('created_at', '<', $threshold)->delete();
+      
+      $this->info("Deleted {$deletedCount} tasks older than 30 days.");
      }
 }
