@@ -44,10 +44,12 @@ LINK : https://learn.microsoft.com/en-us/windows/wsl/install-manual
 
 
 HOW TO RUN THE PROJECT
- - composer install 
-		- https://github.com/ZerrudOrtiz/task-management-application.git
+
 
 Clone the Repo inside the wsl - (FOR /task-management-application)
+ - git clone https://github.com/ZerrudOrtiz/task-management-application.git
+
+ - composer install 
 
 open the project folder
  - code .
@@ -67,7 +69,11 @@ default user
  - admin@taskmangement.ph
  - admin1234
 
-
 Run the Unit Test (phpunit)
  - sail artisan test
+
+Run the Command to Delete task/Setup your cron scheduler
+- sail artisan app:delete-old-tasks
+
+
 # task-management-api
