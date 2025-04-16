@@ -20,6 +20,10 @@ class TaskRepository implements TaskRepositoryInterface
             $query->where('status', $request->status);
         }
 
+        if ($request->filled('priority')) {
+            $query->where('priority', $request->priority);
+        }
+
         if ($request->filled('user_id')) {
             $query->where('user_id', $request->user_id);
         }
