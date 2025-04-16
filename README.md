@@ -46,14 +46,14 @@ LINK : https://learn.microsoft.com/en-us/windows/wsl/install-manual
 HOW TO RUN THE PROJECT
 
 
-Clone the Repo inside the wsl - (FOR /task-management-application)
- - git clone https://github.com/ZerrudOrtiz/task-management-application.git
+Clone the Repo inside the wsl - (FOR /task-management-application-api)
+ - git clone https://github.com/ZerrudOrtiz/task-management-api.git
 
  - composer install 
 
 open the project folder
  - code .
- - update .env file configuration (FOR /task-management-application)
+ - update .env file configuration (FOR /task-management-application-api)
 
 open docker desktop
 
@@ -68,6 +68,8 @@ Run the Database Migration and Seeder
 default user 
  - admin@taskmangement.ph
  - admin1234
+
+VISIT ADMIN : ex: http://127.0.0.1:8080/CheckAdmin/login
 
 Run the Unit Test (phpunit)
  - sail artisan test
