@@ -22,11 +22,25 @@ class TaskService
 
     public function create(array $data)
     {
+        if (isset($data['attachments'])) {
+            $file = $data['attachments'];
+            $path = $file->store('tasks/attachments', 'public');
+            $data['attachments'] = $path; 
+        }
+    
+        $data['created_by'] = auth()->id();
+
         return $this->taskRepository->createTask($data);
     }
 
     public function update(Task $task, array $data)
     {
+        if (isset($data['attachments'])) {
+            $file = $data['attachments'];
+            $path = $file->store('tasks/attachments', 'public');
+            $data['attachments'] = $path; 
+        }
+
         return $this->taskRepository->updateTask($task, $data);
     }
 

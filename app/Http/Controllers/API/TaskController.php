@@ -34,6 +34,9 @@ class TaskController extends Controller
                     'order' => $task->order,
                     'user_id' => $task->user->user_id,
                     'name' => $task->user ? $task->user->name : 'Unassigned',
+                    'attachments' => $task->user->attachments,
+                    'visible' => $task->visible,
+                    'created_at' => $task->created_at->setTimezone('Asia/Manila')->format('Y-m-d h:i A'),
                 ];
             }),
             'current_page' => $tasks->currentPage(),
@@ -47,10 +50,7 @@ class TaskController extends Controller
 
     public function store(TaskRequest $request)
     {
-        $data = $request->validated();
-        $data['created_by'] = auth()->id();
-
-        $this->taskService->create($data);
+        $this->taskService->create($request->validated());
 
         return response()->json(['success' => 1], 201);
     }
@@ -72,5 +72,14 @@ class TaskController extends Controller
     public function getUsers()
     {
         return response()->json(User::all());
+    }
+
+    public function toggleStatus(Task $task)
+    {
+        $task->visible = $task->visible == 1 ? 0 : 1;
+
+        $task->save();
+
+        return response()->json(['success' => 1], 200);
     }
 }

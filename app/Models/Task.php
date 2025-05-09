@@ -13,7 +13,7 @@ class Task extends Model
 
     protected $primaryKey = 'task_id';
 
-    protected $fillable = ['title', 'description','due_date','status', 'priority', 'order', 'created_by','user_id'];
+    protected $fillable = ['title', 'description','due_date','status', 'priority', 'order', 'created_by','user_id','visible','attachments'];
 
     public function user()
     {
