@@ -85,10 +85,10 @@ class UserResource extends Resource
                     
                     return $task;
                 }),
-                Tables\Columns\TextColumn::make('in_progress_task')->label('In Progress  Task')               
+                Tables\Columns\TextColumn::make('todo_task')->label('Todo  Task')               
                 ->getStateUsing(function (User $user): string {
 
-                    $task = Task::where('user_id',$user->user_id)->where('status',config('constants.TASK_STATUS_IN_PROGRESS'))->count();
+                    $task = Task::where('user_id',$user->user_id)->where('status',config('constants.TASK_STATUS_TODO'))->count();
                     
                     return $task;
                 }),

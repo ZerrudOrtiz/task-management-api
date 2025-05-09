@@ -7,7 +7,9 @@ use App\Filament\Resources\TaskResource\RelationManagers;
 use App\Models\Task;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -38,11 +40,11 @@ class TaskResource extends Resource
                     'High' => 'High'
                 ])->required(),
                 Select::make('status')->options([
-                    'pending' => 'Pending',
+                    'todo' => 'To Do',
                     'in_progress' => 'In Progress',
-                    'completed' => 'Completed',
-                    'cancelled' => 'Cancelled'
+                    'done' => 'Done',
                 ])->required(),
+                Checkbox::make('visible'),
                 Forms\Components\Select::make('user_id')->label('Assigned To')
                 ->required()
                 ->options(User::all()->pluck('name','user_id')->map(function ($name) {
@@ -50,6 +52,14 @@ class TaskResource extends Resource
                 })->toArray())
                 ->searchable()
                 ->preload(),
+                FileUpload::make('attachments')
+                ->downloadable()
+                ->openable()
+                ->image()
+                ->imageEditor()
+                ->disk('public')
+                ->visibility('public')
+                ->directory('tasks/attachments')
 
             ]);
     }
@@ -74,6 +84,11 @@ class TaskResource extends Resource
                     $user = User::find($record->created_by);
                     return $user ? ucwords(strtolower($user->name)) : '';
                 }), 
+                Tables\Columns\ImageColumn::make('attachments')
+                ->square()
+                ->stacked(),
+                Tables\Columns\ToggleColumn::make('visible'),
+                
             ])
             ->filters([
                 //

@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -27,6 +28,18 @@ class TaskRepository implements TaskRepositoryInterface
         if ($request->filled('user_id')) {
             $query->where('user_id', $request->user_id);
         }
+
+        if ($request->filled('sort_title')) {
+            $direction = strtolower($request->get('sort_title')) === 'desc' ? 'desc' : 'asc';
+            $query->orderBy('title', $direction);
+        }
+
+        if ($request->filled('sort_created_date')) {
+            $direction = strtolower($request->get('sort_created_date')) === 'desc' ? 'desc' : 'asc';
+            $query->orderBy('created_at', $direction);
+        }
+
+        // $query->where('user_id', Auth::id());
 
         $query->orderBy('order', 'asc');
 
