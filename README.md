@@ -65,6 +65,9 @@ Run the Database Migration and Seeder
  - sail artisan migrate
  - sail artisan db:seed
 
+Run for Storage Link
+ - sail artisan storage:link 
+
 default user 
  - admin@taskmangement.ph
  - admin1234
