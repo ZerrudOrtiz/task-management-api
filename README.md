@@ -69,7 +69,7 @@ default user
  - admin@taskmangement.ph
  - admin1234
 
-VISIT ADMIN : ex: http://127.0.0.1:8080/CheckAdmin/login
+VISIT ADMIN : ex: http://127.0.0.1:8080/admin/login
 
 Run the Unit Test (phpunit)
  - sail artisan test
