@@ -66,7 +66,7 @@ class TaskResource extends Resource
                 ->disk('public')
                 ->visibility('public')
                 ->directory('tasks/attachments')
-
+                ->image()
             ]);
     }
 
