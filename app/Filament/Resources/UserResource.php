@@ -78,10 +78,10 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')->label('Email')->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')->label('Role'),
 
-                Tables\Columns\TextColumn::make('pending_task')->label('Pending Task')               
+                Tables\Columns\TextColumn::make('in_progress_task')->label('Pending Task')               
                 ->getStateUsing(function (User $user): string {
 
-                    $task = Task::where('user_id',$user->user_id)->where('status',config('constants.TASK_STATUS_PENDING'))->count();
+                    $task = Task::where('user_id',$user->user_id)->where('status',config('constants.TASK_STATUS_IN_PROGRESS'))->count();
                     
                     return $task;
                 }),
@@ -92,10 +92,10 @@ class UserResource extends Resource
                     
                     return $task;
                 }),
-                Tables\Columns\TextColumn::make('completed_task')->label('Completed Task')               
+                Tables\Columns\TextColumn::make('done_task')->label('Done Task')               
                 ->getStateUsing(function (User $user): string {
 
-                    $task = Task::where('user_id',$user->user_id)->where('status',config('constants.TASK_STATUS_COMPLETED'))->count();
+                    $task = Task::where('user_id',$user->user_id)->where('status',config('constants.TASK_STATUS_DONE'))->count();
                     
                     return $task;
                 }), 
